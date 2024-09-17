@@ -1,0 +1,58 @@
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:latest
+    environment:
+      MYSQL_USER: wmt-mysql
+      MYSQL_PASSWORD: 021738
+      MYSQL_DATABASE: w_05000
+      MYSQL_ROOT_PASSWORD: 021738
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3303:3303"
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  consul:
+    image: consul:1.6.3
+    command: agent -server -ui -node=server1 -bootstrap-expect=1 -client=0.0.0.0
+    ports:
+      - "8500:8500"
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  config-server:
+    container_name: config-server
+    build:
+      context: docker-config-server
+      dockerfile: Dockerfile
+    image: config-server:latest
+    ports:
+      - "18888:8888"
+    networks:
+      - microservices-net
+    depends_on:
+      - consul
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: docker-api-gateway
+      dockerfile: Dockerfile
+    image: api-gateway:latest
+    ports:
+      - "19999:9999"
+    networks:
+      - microservices-net
+    depends_on:
+      - config-server
+
+networks:
+  microservices-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
