@@ -24,31 +24,31 @@ services:
       - microservices-net
     restart: unless-stopped
 
-  config-server:
-    container_name: config-server
-    build:
-      context: docker-config-server
-      dockerfile: Dockerfile
-    image: config-server:latest
-    ports:
-      - "18888:8888"
-    networks:
-      - microservices-net
-    depends_on:
-      - consul
-
-  api-gateway:
-    container_name: api-gateway
-    build:
-      context: docker-api-gateway
-      dockerfile: Dockerfile
-    image: api-gateway:latest
-    ports:
-      - "19999:9999"
-    networks:
-      - microservices-net
-    depends_on:
-      - config-server
+#  config-server:
+#    container_name: config-server
+#    build:
+#      context: docker-config-server
+#      dockerfile: Dockerfile
+#    image: config-server:latest
+#    ports:
+#      - "18888:8888"
+#    networks:
+#      - microservices-net
+#    depends_on:
+#      - consul
+#
+#  api-gateway:
+#    container_name: api-gateway
+#    build:
+#      context: docker-api-gateway
+#      dockerfile: Dockerfile
+#    image: api-gateway:latest
+#    ports:
+#      - "19999:9999"
+#    networks:
+#      - microservices-net
+#    depends_on:
+#      - config-server
 
 networks:
   microservices-net:
