@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.function.Predicate;
 
+/**
+ * @author wmtumanday
+ */
 @Component
 public class RouteValidator {
 
